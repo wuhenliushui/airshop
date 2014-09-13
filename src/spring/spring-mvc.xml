@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd"  
+        default-autowire="byName">        
+
+	<!-- Maps '/' requests to the 'home' view -->
+	<mvc:view-controller path="/"  view-name="home"/>
+	 
+	<!-- enable autowire -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.airshop.**.controller" >
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	
+	<!-- Configures the @Controller programming model 必须加上这个，不然请求controller时会出现no mapping url错误-->
+	<mvc:annotation-driven />
+	
+	<!-- 对某些静态资源，如css,图片等进行过滤 ,有引用 "/views/**" 的路径引用转到工程的/views/目录取资源 -->
+	<!--  <mvc:resources mapping="/views/commons/**" location="/views/commons/" />
+    <mvc:resources mapping="/views/image/**" location="/views/image/" />	
+    <mvc:resources mapping="/views/script/**" location="/views/script/" />	
+    <mvc:resources mapping="/views/page/**" location="/views/page/" />	
+    <mvc:resources mapping="/views/style/**" location="/views/style/" />	-->
+
+     <mvc:default-servlet-handler />
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/jsp directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10000000" />
+	</beans:bean>
+		
+</beans:beans>
